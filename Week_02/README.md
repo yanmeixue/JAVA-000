@@ -29,7 +29,7 @@ Heap
   class space    used 442K, capacity 460K, committed 512K, reserved 1048576K
 
 ```
-**默认并行GC，不指定Xmx时，可以看到默认Xmx给了四分之一内存。由于初始堆较小，full GC 3次**
+**默认并行GC，不指定Xmx时，可以看到默认最大堆内存给了四分之一系统内存。由于初始堆较小，full GC 3次**
 
 ---
 
@@ -59,7 +59,7 @@ Heap
   class space    used 297K, capacity 386K, committed 512K, reserved 1048576K
 
 ```
-**默认并行GC，指定Xms=Xmx=2G，可以看到无fullGC，Xms的设置效果明显**
+**默认并行GC，指定Xms=Xmx=2G，可以看到无fullGC，设置效果明显**
 
 ---
 
@@ -1005,7 +1005,7 @@ Heap
 
 ## 周四作业二
 使用压测工具（wrk 或 sb），演练 gateway-server-0.0.1-SNAPSHOT.jar 示例
-
+压测命令：sb -u http://localhost:8086/api/hello -c 20 -N 60
 - java -jar gateway-server-0.0.1-SNAPSHOT.jar
 
 ```
