@@ -1004,7 +1004,9 @@ Heap
 ---
 
 ## 周四作业二
+
 使用压测工具（wrk 或 sb），演练 gateway-server-0.0.1-SNAPSHOT.jar 示例
+
 ---
 压测命令：sb -u http://localhost:8086/api/hello -c 20 -N 60
 - java -jar gateway-server-0.0.1-SNAPSHOT.jar
