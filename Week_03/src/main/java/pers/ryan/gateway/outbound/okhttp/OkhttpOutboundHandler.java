@@ -32,10 +32,6 @@ public class OkhttpOutboundHandler extends OutboundHandlerAdapter {
 
     @Override
     protected void doRequest(String url, FullHttpRequest fullRequest, ChannelHandlerContext ctx) {
-        proxyService.submit(() -> fetch(fullRequest, ctx, url));
-    }
-
-    private void fetch(FullHttpRequest fullRequest, ChannelHandlerContext ctx, String url) {
         Request.Builder builder = new Request.Builder();
         builder.url(url);
         for (Map.Entry<String, String> header : fullRequest.headers()) {
@@ -54,4 +50,5 @@ public class OkhttpOutboundHandler extends OutboundHandlerAdapter {
             }
         });
     }
+
 }

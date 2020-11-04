@@ -43,19 +43,15 @@ public class HttpClientOutboundHandler extends OutboundHandlerAdapter {
 
     @Override
     protected void doRequest(String url, FullHttpRequest fullRequest, ChannelHandlerContext ctx) {
-        proxyService.submit(() -> fetchGet(fullRequest, ctx, url));
-    }
-
-    private void fetchGet(FullHttpRequest inbound, ChannelHandlerContext ctx, String url) {
         final HttpGet httpGet = new HttpGet(url);
-        for (Map.Entry<String, String> header : inbound.headers()) {
+        for (Map.Entry<String, String> header : fullRequest.headers()) {
             log.info("添加请求头, key: {}, val: {}", header.getKey(), header.getValue());
             httpGet.setHeader(header.getKey(), header.getValue());
         }
         httpclient.execute(httpGet, new FutureCallback<HttpResponse>() {
             @Override
             public void completed(final HttpResponse endpointResponse) {
-                handleResponse(inbound, ctx, endpointResponse);
+                handleResponse(fullRequest, ctx, endpointResponse);
             }
 
             @Override
@@ -70,5 +66,6 @@ public class HttpClientOutboundHandler extends OutboundHandlerAdapter {
             }
         });
     }
+
 
 }

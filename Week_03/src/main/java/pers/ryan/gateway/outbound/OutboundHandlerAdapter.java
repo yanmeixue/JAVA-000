@@ -42,7 +42,7 @@ public abstract class OutboundHandlerAdapter {
         for (HttpRequestFilter preHandlingFilter : preHandlingFilters) {
             preHandlingFilter.filter(fullRequest, ctx);
         }
-        doRequest(url, fullRequest, ctx);
+        proxyService.submit(() -> doRequest(url, fullRequest, ctx));
     }
 
 
@@ -78,6 +78,6 @@ public abstract class OutboundHandlerAdapter {
 
     protected abstract byte[] getResponseBody(Object obj) throws IOException;
 
-    protected abstract void doRequest(String url, final FullHttpRequest fullRequest, final ChannelHandlerContext ctx);
+    protected abstract void doRequest(String url, final FullHttpRequest inbound, final ChannelHandlerContext ctx);
 
 }
