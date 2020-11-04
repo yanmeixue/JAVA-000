@@ -1,4 +1,4 @@
-package pers.ryan.gateway.outbound.httpclient4;
+package pers.ryan.gateway.outbound;
 
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
