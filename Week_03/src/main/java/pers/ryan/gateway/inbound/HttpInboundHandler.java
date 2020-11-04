@@ -10,12 +10,10 @@ import pers.ryan.gateway.outbound.httpclient4.HttpOutboundHandler;
 @Slf4j
 public class HttpInboundHandler extends ChannelInboundHandlerAdapter {
 
-    private final String proxyServer;
     private HttpOutboundHandler httpOutboundHandler;
 
-    public HttpInboundHandler(String proxyServer) {
-        this.proxyServer = proxyServer;
-        httpOutboundHandler = new HttpOutboundHandler(this.proxyServer);
+    public HttpInboundHandler() {
+        httpOutboundHandler = new HttpOutboundHandler();
     }
 
     @Override

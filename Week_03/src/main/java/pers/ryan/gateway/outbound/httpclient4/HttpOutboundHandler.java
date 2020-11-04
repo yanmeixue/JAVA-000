@@ -18,6 +18,7 @@ import org.apache.http.impl.nio.client.HttpAsyncClients;
 import org.apache.http.impl.nio.reactor.IOReactorConfig;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
+import pers.ryan.gateway.Config;
 
 import java.util.concurrent.*;
 
@@ -28,12 +29,10 @@ import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 @Slf4j
 public class HttpOutboundHandler {
 
-    private CloseableHttpAsyncClient httpclient;
-    private ExecutorService proxyService;
-    private String backendUrl;
+    private final CloseableHttpAsyncClient httpclient;
+    private final ExecutorService proxyService;
 
-    public HttpOutboundHandler(String backendUrl) {
-        this.backendUrl = backendUrl.endsWith("/") ? backendUrl.substring(0, backendUrl.length() - 1) : backendUrl;
+    public HttpOutboundHandler() {
         int cores = Runtime.getRuntime().availableProcessors() * 2;
         long keepAliveTime = 1000;
         int queueSize = 2048;
@@ -58,7 +57,7 @@ public class HttpOutboundHandler {
     }
 
     public void handle(final FullHttpRequest fullRequest, final ChannelHandlerContext ctx) {
-        final String url = this.backendUrl + fullRequest.uri();
+        final String url = Config.SERVER_LIST.get(0) + fullRequest.uri();
         log.info("请求后端地址: {}", url);
         proxyService.submit(() -> fetchGet(fullRequest, ctx, url));
     }
