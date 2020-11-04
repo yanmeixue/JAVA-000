@@ -9,9 +9,12 @@ import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpUtil;
 import lombok.extern.slf4j.Slf4j;
-import pers.ryan.gateway.Config;
+import pers.ryan.gateway.config.Config;
+import pers.ryan.gateway.filter.HttpRequestFilter;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -24,13 +27,17 @@ import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 @Slf4j
 public abstract class OutboundHandlerAdapter {
     protected final int cores = Runtime.getRuntime().availableProcessors() * 2;
-    protected final ExecutorService proxyService = new ThreadPoolExecutor(cores, cores, 1000, TimeUnit.MILLISECONDS,
-            new ArrayBlockingQueue<>(2048), new NamedThreadFactory("proxyService"), new ThreadPoolExecutor.CallerRunsPolicy());
-
+    protected final ExecutorService proxyService = new ThreadPoolExecutor(cores, cores * 4, 30, TimeUnit.SECONDS,
+            new ArrayBlockingQueue<>(1024), new ThreadPoolExecutor.CallerRunsPolicy());
+    // 转发请求前的filter
+    private final List<HttpRequestFilter> preHandlingFilters = new ArrayList<>();
 
     public void handle(final FullHttpRequest fullRequest, final ChannelHandlerContext ctx) {
         final String url = Config.SERVER_LIST.get(0) + fullRequest.uri();
         log.info("请求后端地址: {}", url);
+        for (HttpRequestFilter preHandlingFilter : preHandlingFilters) {
+            preHandlingFilter.filter(fullRequest, ctx);
+        }
         doRequest(url, fullRequest, ctx);
     }
 
@@ -57,7 +64,12 @@ public abstract class OutboundHandlerAdapter {
         }
     }
 
+    public void addPreHandlingFilter(HttpRequestFilter filter) {
+        preHandlingFilters.add(filter);
+    }
+
     protected abstract byte[] getResponseBody(Object obj) throws IOException;
 
     protected abstract void doRequest(String url, final FullHttpRequest fullRequest, final ChannelHandlerContext ctx);
+
 }

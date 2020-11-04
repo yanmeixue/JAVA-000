@@ -5,7 +5,8 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.util.ReferenceCountUtil;
 import lombok.extern.slf4j.Slf4j;
-import pers.ryan.gateway.Config;
+import pers.ryan.gateway.config.Config;
+import pers.ryan.gateway.filter.impl.AddHeaderRequestFilter;
 import pers.ryan.gateway.outbound.OutboundHandlerAdapter;
 import pers.ryan.gateway.outbound.httpclient4.HttpClientOutboundHandler;
 import pers.ryan.gateway.outbound.okhttp.OkhttpOutboundHandler;
@@ -22,6 +23,7 @@ public class HttpInboundHandler extends ChannelInboundHandlerAdapter {
                 break;
             case Config.HANDLER_TYPE_OK_HTTP:
                 outboundHandler = new OkhttpOutboundHandler();
+                outboundHandler.addPreHandlingFilter(new AddHeaderRequestFilter());
                 break;
             default:
                 throw new RuntimeException("handler type error");

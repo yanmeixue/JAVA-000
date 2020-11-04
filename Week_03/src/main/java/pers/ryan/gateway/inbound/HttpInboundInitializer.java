@@ -5,7 +5,7 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
-import pers.ryan.gateway.Config;
+import pers.ryan.gateway.config.Config;
 
 public class HttpInboundInitializer extends ChannelInitializer<SocketChannel> {
 
