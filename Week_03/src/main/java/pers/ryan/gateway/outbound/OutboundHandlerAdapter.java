@@ -11,6 +11,8 @@ import io.netty.handler.codec.http.HttpUtil;
 import lombok.extern.slf4j.Slf4j;
 import pers.ryan.gateway.config.Config;
 import pers.ryan.gateway.filter.HttpRequestFilter;
+import pers.ryan.gateway.router.HttpEndpointRouter;
+import pers.ryan.gateway.router.impl.RandomRouter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,9 +33,11 @@ public abstract class OutboundHandlerAdapter {
             new ArrayBlockingQueue<>(1024), new ThreadPoolExecutor.CallerRunsPolicy());
     // 转发请求前的filter
     private final List<HttpRequestFilter> preHandlingFilters = new ArrayList<>();
+    // 路由，默认随机策略
+    private HttpEndpointRouter router = new RandomRouter();
 
     public void handle(final FullHttpRequest fullRequest, final ChannelHandlerContext ctx) {
-        final String url = Config.SERVER_LIST.get(0) + fullRequest.uri();
+        String url = router.route(Config.SERVER_LIST) + fullRequest.uri();
         log.info("请求后端地址: {}", url);
         for (HttpRequestFilter preHandlingFilter : preHandlingFilters) {
             preHandlingFilter.filter(fullRequest, ctx);
@@ -66,6 +70,10 @@ public abstract class OutboundHandlerAdapter {
 
     public void addPreHandlingFilter(HttpRequestFilter filter) {
         preHandlingFilters.add(filter);
+    }
+
+    public void setRouter(HttpEndpointRouter router) {
+        this.router = router;
     }
 
     protected abstract byte[] getResponseBody(Object obj) throws IOException;

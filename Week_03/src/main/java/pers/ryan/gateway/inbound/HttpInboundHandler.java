@@ -10,6 +10,7 @@ import pers.ryan.gateway.filter.impl.AddHeaderRequestFilter;
 import pers.ryan.gateway.outbound.OutboundHandlerAdapter;
 import pers.ryan.gateway.outbound.httpclient4.HttpClientOutboundHandler;
 import pers.ryan.gateway.outbound.okhttp.OkhttpOutboundHandler;
+import pers.ryan.gateway.router.impl.RoundRobinRouter;
 
 @Slf4j
 public class HttpInboundHandler extends ChannelInboundHandlerAdapter {
@@ -24,6 +25,7 @@ public class HttpInboundHandler extends ChannelInboundHandlerAdapter {
             case Config.HANDLER_TYPE_OK_HTTP:
                 outboundHandler = new OkhttpOutboundHandler();
                 outboundHandler.addPreHandlingFilter(new AddHeaderRequestFilter());
+                outboundHandler.setRouter(new RoundRobinRouter());
                 break;
             default:
                 throw new RuntimeException("handler type error");
