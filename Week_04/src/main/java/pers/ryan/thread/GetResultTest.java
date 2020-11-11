@@ -37,9 +37,10 @@ public class GetResultTest {
 
     @Test
     public void useWhile() throws InterruptedException {
+        methodName = getMethodName();
         new Thread(() -> {
             result = FibUtil.fib41();
-        }, methodName = getMethodName()).start();
+        }).start();
 
         while (result == 0) {
             TimeUnit.MILLISECONDS.sleep(1);
@@ -48,7 +49,8 @@ public class GetResultTest {
 
     @Test
     public void useJoin() throws InterruptedException {
-        Thread thread = new Thread(() -> result = FibUtil.fib41(), methodName = getMethodName());
+        methodName = getMethodName();
+        Thread thread = new Thread(() -> result = FibUtil.fib41());
         thread.start();
         thread.join();
     }
@@ -58,11 +60,12 @@ public class GetResultTest {
      */
     @Test
     public void useSynchronized() throws InterruptedException {
+        methodName = getMethodName();
         new Thread(() -> {
             synchronized (this) {
                 result = FibUtil.fib41();
             }
-        }, methodName = getMethodName()).start();
+        }).start();
 
         TimeUnit.MILLISECONDS.sleep(500);
         synchronized (this) {
@@ -74,6 +77,7 @@ public class GetResultTest {
      */
     @Test
     public void useWaitNotify() throws InterruptedException {
+        methodName = getMethodName();
         new Thread(() -> {
             try {
                 TimeUnit.MILLISECONDS.sleep(100);
@@ -84,7 +88,7 @@ public class GetResultTest {
                 result = FibUtil.fib41();
                 notifyAll();
             }
-        }, methodName = getMethodName()).start();
+        }).start();
 
         synchronized (this) {
             wait();
@@ -96,6 +100,7 @@ public class GetResultTest {
      */
     @Test
     public void useLock() throws InterruptedException {
+        methodName = getMethodName();
         final Lock lock = new ReentrantLock();
         new Thread(() -> {
             try {
@@ -104,7 +109,7 @@ public class GetResultTest {
             } finally {
                 lock.unlock();
             }
-        }, methodName = getMethodName()).start();
+        }).start();
 
         TimeUnit.MILLISECONDS.sleep(500);
         try {
@@ -119,6 +124,7 @@ public class GetResultTest {
      */
     @Test
     public void useLockAndCondition() throws InterruptedException {
+        methodName = getMethodName();
         Lock lock = new ReentrantLock();
         Condition condition = lock.newCondition();
         new Thread(() -> {
@@ -132,7 +138,7 @@ public class GetResultTest {
             } finally {
                 lock.unlock();
             }
-        }, methodName = getMethodName()).start();
+        }).start();
 
         try {
             lock.lock();
@@ -147,18 +153,20 @@ public class GetResultTest {
      */
     @Test
     public void useCountDownLatch() throws InterruptedException {
+        methodName = getMethodName();
         CountDownLatch countDownLatch = new CountDownLatch(1);
         new Thread(() -> {
             result = FibUtil.fib41();
             countDownLatch.countDown();
-        }, methodName = getMethodName()).start();
+        }).start();
         countDownLatch.await();
     }
 
     @Test
     public void useFutureTask() throws ExecutionException, InterruptedException {
+        methodName = getMethodName();
         FutureTask<Integer> task = new FutureTask<>(FibUtil::fib41);
-        new Thread(task, methodName = getMethodName()).start();
+        new Thread(task).start();
         result = task.get();
     }
 
