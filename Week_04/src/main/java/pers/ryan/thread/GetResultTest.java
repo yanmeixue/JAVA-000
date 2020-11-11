@@ -21,10 +21,6 @@ public class GetResultTest {
     private String methodName;
     private int result;
 
-    private static String getMethodName() {
-        return Thread.currentThread().getStackTrace()[2].getMethodName();
-    }
-
     @Before
     public void init() {
         result = 0;
@@ -197,5 +193,9 @@ public class GetResultTest {
             }
         }, getMethodName()).start();
         result = blockingQueue.take();
+    }
+
+    private String getMethodName() {
+        return Thread.currentThread().getStackTrace()[2].getMethodName();
     }
 }
