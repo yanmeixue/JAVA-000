@@ -35,6 +35,7 @@ public class GetResultTest {
     public void after() {
         log.info("method: {}, time consumed: {}", methodName, System.currentTimeMillis() - start);
         log.info("result: {}", result);
+        log.info("");
         Assert.assertEquals(FIBONACCI_41, result);
     }
 
@@ -185,6 +186,7 @@ public class GetResultTest {
      */
     @Test
     public void useBlockingQueue() throws InterruptedException {
+        methodName = getMethodName();
         BlockingQueue<Integer> blockingQueue = new LinkedBlockingQueue<>();
         new Thread(() -> {
             int result = FibUtil.fib41();
