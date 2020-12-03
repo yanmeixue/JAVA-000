@@ -79,11 +79,11 @@ CREATE TABLE `product_pic` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商品图片信息表';
 
 -- 订单
-CREATE TABLE `order` (
+CREATE TABLE `order_main` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '订单ID',
   `order_sn` bigint unsigned NOT NULL COMMENT '订单编号',
   `user_id` bigint unsigned NOT NULL COMMENT '下单人ID',
-  `shipping_name` varchar(10) NOT NULL COMMENT '收货人姓名',
+  `shipping_name` varchar(50) NOT NULL COMMENT '收货人姓名',
   `province` smallint NOT NULL COMMENT '省',
   `city` smallint NOT NULL COMMENT '市',
   `district` smallint NOT NULL COMMENT '区',
