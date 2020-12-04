@@ -1,6 +1,5 @@
 package pers.ryan.database.config;
 
-import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -31,7 +30,6 @@ public class DataSourceMasterConfig {
         SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
         org.apache.ibatis.session.Configuration cf = new org.apache.ibatis.session.Configuration();
         cf.setMapUnderscoreToCamelCase(true);
-        cf.setDefaultExecutorType(ExecutorType.SIMPLE);
         bean.setConfiguration(cf);
         bean.setDataSource(dataSource);
         bean.setMapperLocations(

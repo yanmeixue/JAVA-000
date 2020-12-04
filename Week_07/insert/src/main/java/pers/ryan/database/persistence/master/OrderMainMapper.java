@@ -27,4 +27,6 @@ public interface OrderMainMapper {
     int updateByPrimaryKeySelective(OrderMain record);
 
     int updateByPrimaryKey(OrderMain record);
+
+    int insertBatch(List<OrderMain> orderMainList);
 }

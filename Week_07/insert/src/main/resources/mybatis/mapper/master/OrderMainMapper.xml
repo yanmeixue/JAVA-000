@@ -453,4 +453,20 @@
       modified_time = #{modifiedTime,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <insert id="insertBatch" parameterType="pers.ryan.database.persistence.master.OrderMain">
+    insert into order_main (order_sn, user_id,
+      shipping_name, province, city,
+      district, address, payment_method,
+      order_money, shipping_money, payment_money,
+      create_time, order_status, modified_time)
+    values
+    <foreach collection="list" item="record" separator=",">
+      (#{record.orderSn,jdbcType=BIGINT}, #{record.userId,jdbcType=BIGINT},
+      #{record.shippingName,jdbcType=VARCHAR}, #{record.province,jdbcType=SMALLINT}, #{record.city,jdbcType=SMALLINT},
+      #{record.district,jdbcType=SMALLINT}, #{record.address,jdbcType=VARCHAR}, #{record.paymentMethod,jdbcType=TINYINT},
+      #{record.orderMoney,jdbcType=DECIMAL}, #{record.shippingMoney,jdbcType=DECIMAL}, #{record.paymentMoney,jdbcType=DECIMAL},
+      #{record.createTime,jdbcType=BIGINT},#{record.orderStatus,jdbcType=TINYINT}, #{record.modifiedTime,jdbcType=BIGINT})
+    </foreach>
+  </insert>
 </mapper>
