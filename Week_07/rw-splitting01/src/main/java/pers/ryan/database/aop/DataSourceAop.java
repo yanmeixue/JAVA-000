@@ -37,6 +37,4 @@ public class DataSourceAop {
     public void write() {
         DBContextHolder.master();
     }
-
-
 }
