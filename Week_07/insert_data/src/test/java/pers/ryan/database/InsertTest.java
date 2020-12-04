@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class MapperTest {
+public class InsertTest {
     private static final int TOTAL_MOUNT = 1000000;
     private static final int EACH_MOUNT = 10000;
     private final Queue<OrderMain> orderQueue = new ConcurrentLinkedQueue<>();
