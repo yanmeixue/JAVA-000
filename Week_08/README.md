@@ -8,3 +8,4 @@
 
 ## 作业2
 - 基于 hmily TCC 或 ShardingSphere 的 Atomikos XA 实现一个简单的分布式事务应用 demo（二选一），提交到 Github
+- 项目位于文件夹atomikos下，测试代码在单元测试里
