@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.ryan.database.persistence.OrderMainMapper">
+  <resultMap id="BaseResultMap" type="pers.ryan.database.persistence.OrderMain">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="order_sn" jdbcType="BIGINT" property="orderSn" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="shipping_name" jdbcType="VARCHAR" property="shippingName" />
+    <result column="province" jdbcType="SMALLINT" property="province" />
+    <result column="city" jdbcType="SMALLINT" property="city" />
+    <result column="district" jdbcType="SMALLINT" property="district" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="payment_method" jdbcType="TINYINT" property="paymentMethod" />
+    <result column="order_money" jdbcType="DECIMAL" property="orderMoney" />
+    <result column="shipping_money" jdbcType="DECIMAL" property="shippingMoney" />
+    <result column="payment_money" jdbcType="DECIMAL" property="paymentMoney" />
+    <result column="shipping_comp_name" jdbcType="VARCHAR" property="shippingCompName" />
+    <result column="shipping_sn" jdbcType="VARCHAR" property="shippingSn" />
+    <result column="create_time" jdbcType="BIGINT" property="createTime" />
+    <result column="shipping_time" jdbcType="TIMESTAMP" property="shippingTime" />
+    <result column="pay_time" jdbcType="TIMESTAMP" property="payTime" />
+    <result column="receive_time" jdbcType="TIMESTAMP" property="receiveTime" />
+    <result column="order_status" jdbcType="TINYINT" property="orderStatus" />
+    <result column="modified_time" jdbcType="BIGINT" property="modifiedTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, order_sn, user_id, shipping_name, province, city, district, address, payment_method, 
+    order_money, shipping_money, payment_money, shipping_comp_name, shipping_sn, create_time, 
+    shipping_time, pay_time, receive_time, order_status, modified_time
+  </sql>
+  <select id="selectByExample" parameterType="pers.ryan.database.persistence.OrderMainExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from order_main
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from order_main
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from order_main
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="pers.ryan.database.persistence.OrderMainExample">
+    delete from order_main
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="pers.ryan.database.persistence.OrderMain">
+    insert into order_main (id, order_sn, user_id, 
+      shipping_name, province, city, 
+      district, address, payment_method, 
+      order_money, shipping_money, payment_money, 
+      shipping_comp_name, shipping_sn, create_time, 
+      shipping_time, pay_time, receive_time, 
+      order_status, modified_time)
+    values (#{id,jdbcType=BIGINT}, #{orderSn,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, 
+      #{shippingName,jdbcType=VARCHAR}, #{province,jdbcType=SMALLINT}, #{city,jdbcType=SMALLINT}, 
+      #{district,jdbcType=SMALLINT}, #{address,jdbcType=VARCHAR}, #{paymentMethod,jdbcType=TINYINT}, 
+      #{orderMoney,jdbcType=DECIMAL}, #{shippingMoney,jdbcType=DECIMAL}, #{paymentMoney,jdbcType=DECIMAL}, 
+      #{shippingCompName,jdbcType=VARCHAR}, #{shippingSn,jdbcType=VARCHAR}, #{createTime,jdbcType=BIGINT}, 
+      #{shippingTime,jdbcType=TIMESTAMP}, #{payTime,jdbcType=TIMESTAMP}, #{receiveTime,jdbcType=TIMESTAMP}, 
+      #{orderStatus,jdbcType=TINYINT}, #{modifiedTime,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="pers.ryan.database.persistence.OrderMain">
+    insert into order_main
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="orderSn != null">
+        order_sn,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="shippingName != null">
+        shipping_name,
+      </if>
+      <if test="province != null">
+        province,
+      </if>
+      <if test="city != null">
+        city,
+      </if>
+      <if test="district != null">
+        district,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="paymentMethod != null">
+        payment_method,
+      </if>
+      <if test="orderMoney != null">
+        order_money,
+      </if>
+      <if test="shippingMoney != null">
+        shipping_money,
+      </if>
+      <if test="paymentMoney != null">
+        payment_money,
+      </if>
+      <if test="shippingCompName != null">
+        shipping_comp_name,
+      </if>
+      <if test="shippingSn != null">
+        shipping_sn,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="shippingTime != null">
+        shipping_time,
+      </if>
+      <if test="payTime != null">
+        pay_time,
+      </if>
+      <if test="receiveTime != null">
+        receive_time,
+      </if>
+      <if test="orderStatus != null">
+        order_status,
+      </if>
+      <if test="modifiedTime != null">
+        modified_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="orderSn != null">
+        #{orderSn,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="shippingName != null">
+        #{shippingName,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null">
+        #{province,jdbcType=SMALLINT},
+      </if>
+      <if test="city != null">
+        #{city,jdbcType=SMALLINT},
+      </if>
+      <if test="district != null">
+        #{district,jdbcType=SMALLINT},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentMethod != null">
+        #{paymentMethod,jdbcType=TINYINT},
+      </if>
+      <if test="orderMoney != null">
+        #{orderMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="shippingMoney != null">
+        #{shippingMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="paymentMoney != null">
+        #{paymentMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="shippingCompName != null">
+        #{shippingCompName,jdbcType=VARCHAR},
+      </if>
+      <if test="shippingSn != null">
+        #{shippingSn,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="shippingTime != null">
+        #{shippingTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payTime != null">
+        #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="receiveTime != null">
+        #{receiveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderStatus != null">
+        #{orderStatus,jdbcType=TINYINT},
+      </if>
+      <if test="modifiedTime != null">
+        #{modifiedTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="pers.ryan.database.persistence.OrderMainExample" resultType="java.lang.Long">
+    select count(*) from order_main
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update order_main
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.orderSn != null">
+        order_sn = #{record.orderSn,jdbcType=BIGINT},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=BIGINT},
+      </if>
+      <if test="record.shippingName != null">
+        shipping_name = #{record.shippingName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.province != null">
+        province = #{record.province,jdbcType=SMALLINT},
+      </if>
+      <if test="record.city != null">
+        city = #{record.city,jdbcType=SMALLINT},
+      </if>
+      <if test="record.district != null">
+        district = #{record.district,jdbcType=SMALLINT},
+      </if>
+      <if test="record.address != null">
+        address = #{record.address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.paymentMethod != null">
+        payment_method = #{record.paymentMethod,jdbcType=TINYINT},
+      </if>
+      <if test="record.orderMoney != null">
+        order_money = #{record.orderMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="record.shippingMoney != null">
+        shipping_money = #{record.shippingMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="record.paymentMoney != null">
+        payment_money = #{record.paymentMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="record.shippingCompName != null">
+        shipping_comp_name = #{record.shippingCompName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shippingSn != null">
+        shipping_sn = #{record.shippingSn,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.shippingTime != null">
+        shipping_time = #{record.shippingTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.payTime != null">
+        pay_time = #{record.payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.receiveTime != null">
+        receive_time = #{record.receiveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.orderStatus != null">
+        order_status = #{record.orderStatus,jdbcType=TINYINT},
+      </if>
+      <if test="record.modifiedTime != null">
+        modified_time = #{record.modifiedTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update order_main
+    set id = #{record.id,jdbcType=BIGINT},
+      order_sn = #{record.orderSn,jdbcType=BIGINT},
+      user_id = #{record.userId,jdbcType=BIGINT},
+      shipping_name = #{record.shippingName,jdbcType=VARCHAR},
+      province = #{record.province,jdbcType=SMALLINT},
+      city = #{record.city,jdbcType=SMALLINT},
+      district = #{record.district,jdbcType=SMALLINT},
+      address = #{record.address,jdbcType=VARCHAR},
+      payment_method = #{record.paymentMethod,jdbcType=TINYINT},
+      order_money = #{record.orderMoney,jdbcType=DECIMAL},
+      shipping_money = #{record.shippingMoney,jdbcType=DECIMAL},
+      payment_money = #{record.paymentMoney,jdbcType=DECIMAL},
+      shipping_comp_name = #{record.shippingCompName,jdbcType=VARCHAR},
+      shipping_sn = #{record.shippingSn,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=BIGINT},
+      shipping_time = #{record.shippingTime,jdbcType=TIMESTAMP},
+      pay_time = #{record.payTime,jdbcType=TIMESTAMP},
+      receive_time = #{record.receiveTime,jdbcType=TIMESTAMP},
+      order_status = #{record.orderStatus,jdbcType=TINYINT},
+      modified_time = #{record.modifiedTime,jdbcType=BIGINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="pers.ryan.database.persistence.OrderMain">
+    update order_main
+    <set>
+      <if test="orderSn != null">
+        order_sn = #{orderSn,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="shippingName != null">
+        shipping_name = #{shippingName,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null">
+        province = #{province,jdbcType=SMALLINT},
+      </if>
+      <if test="city != null">
+        city = #{city,jdbcType=SMALLINT},
+      </if>
+      <if test="district != null">
+        district = #{district,jdbcType=SMALLINT},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentMethod != null">
+        payment_method = #{paymentMethod,jdbcType=TINYINT},
+      </if>
+      <if test="orderMoney != null">
+        order_money = #{orderMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="shippingMoney != null">
+        shipping_money = #{shippingMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="paymentMoney != null">
+        payment_money = #{paymentMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="shippingCompName != null">
+        shipping_comp_name = #{shippingCompName,jdbcType=VARCHAR},
+      </if>
+      <if test="shippingSn != null">
+        shipping_sn = #{shippingSn,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="shippingTime != null">
+        shipping_time = #{shippingTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payTime != null">
+        pay_time = #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="receiveTime != null">
+        receive_time = #{receiveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderStatus != null">
+        order_status = #{orderStatus,jdbcType=TINYINT},
+      </if>
+      <if test="modifiedTime != null">
+        modified_time = #{modifiedTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="pers.ryan.database.persistence.OrderMain">
+    update order_main
+    set order_sn = #{orderSn,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=BIGINT},
+      shipping_name = #{shippingName,jdbcType=VARCHAR},
+      province = #{province,jdbcType=SMALLINT},
+      city = #{city,jdbcType=SMALLINT},
+      district = #{district,jdbcType=SMALLINT},
+      address = #{address,jdbcType=VARCHAR},
+      payment_method = #{paymentMethod,jdbcType=TINYINT},
+      order_money = #{orderMoney,jdbcType=DECIMAL},
+      shipping_money = #{shippingMoney,jdbcType=DECIMAL},
+      payment_money = #{paymentMoney,jdbcType=DECIMAL},
+      shipping_comp_name = #{shippingCompName,jdbcType=VARCHAR},
+      shipping_sn = #{shippingSn,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=BIGINT},
+      shipping_time = #{shippingTime,jdbcType=TIMESTAMP},
+      pay_time = #{payTime,jdbcType=TIMESTAMP},
+      receive_time = #{receiveTime,jdbcType=TIMESTAMP},
+      order_status = #{orderStatus,jdbcType=TINYINT},
+      modified_time = #{modifiedTime,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
